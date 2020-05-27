@@ -70,6 +70,9 @@ steps:
     custom: tool
     arguments: 'install --global dotnet-reportgenerator-globaltool'
 
+
+
+
 - task: DotNetCoreCLI@2
   displayName: 'Run unit tests - $(buildConfiguration)'
   inputs:
@@ -78,9 +81,17 @@ steps:
     publishTestResults: true
     projects: '**/*.Tests.csproj'
 
-- script: |
-    reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
+# - script: |
+#     reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
+#   displayName: 'Create code coverage report'
+
+- task: reportgenerator@4
   displayName: 'Create code coverage report'
+  inputs:
+    reports: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+    targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
+    reporttypes: 'HtmlInline_AzurePipelines;SonarQube'
+
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud code analysis'
