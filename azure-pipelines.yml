@@ -81,16 +81,16 @@ steps:
     publishTestResults: true
     projects: '**/*.Tests.csproj'
 
-# - script: |
-#     reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
-#   displayName: 'Create code coverage report'
-
-- task: reportgenerator@4
+- script: |
+    reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
   displayName: 'Create code coverage report'
-  inputs:
-    reports: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
-    targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
-    reporttypes: 'HtmlInline_AzurePipelines;SonarQube'
+
+# - task: reportgenerator@4
+#   displayName: 'Create code coverage report'
+#   inputs:
+#     reports: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+#     targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
+#     reporttypes: 'HtmlInline_AzurePipelines;SonarQube'
 
 
 - task: SonarCloudAnalyze@1
